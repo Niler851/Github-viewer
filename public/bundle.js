@@ -23686,11 +23686,9 @@
 	            repos: [1, 2, 3]
 	        };
 	    },
-	    componentDidMount: function componentDidMount() {
-	        this.ref = new Firebase('https://github-notes-1337.firebaseio.com');
+	    init: function init() {
 	        var childRef = this.ref.child(this.getParams().username);
 	        this.bindAsArray(childRef, 'notes');
-
 	        helpers.getGithubInfo(this.getParams().username).then((function (dataObject) {
 	            this.setState({
 	                bio: dataObject.bio,
@@ -23698,8 +23696,16 @@
 	            });
 	        }).bind(this));
 	    },
+	    componentDidMount: function componentDidMount() {
+	        this.ref = new Firebase('https://github-notes-1337.firebaseio.com');
+	        this.init();
+	    },
 	    componentWillUnmount: function componentWillUnmount() {
 	        this.unbind('notes');
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps() {
+	        this.unbind('notes');
+	        this.init();
 	    },
 	    handleAddNote: function handleAddNote(newNote) {
 	        this.ref.child(this.getParams().username).set(this.state.notes.concat([newNote]));
