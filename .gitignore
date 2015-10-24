@@ -1,0 +1,7 @@
+node_modules
+bower_components
+#.idea stuff
+workspace.xml
+tasks.xml
+*.iws
+
